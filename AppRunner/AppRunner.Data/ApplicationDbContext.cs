@@ -1,6 +1,7 @@
 ﻿namespace AppRunner.Data
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
 
     using AppRunner.Data.Models;
 
@@ -19,7 +20,12 @@
         {
             if (optionsBuilder.IsConfigured == false)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-LH7CK7C\\SQLEXPRESS;Database=AppRunnerCore;Integrated Security=true;");
+                IConfiguration configuration = new ConfigurationBuilder()
+                    .AddJsonFile("secrets.json")
+                    .Build();
+
+                string migrationConnectionString = configuration["MigrationConnectionString"];
+                optionsBuilder.UseSqlServer(migrationConnectionString);
             }
         }
 
