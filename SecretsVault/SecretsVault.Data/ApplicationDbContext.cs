@@ -1,5 +1,7 @@
 ﻿namespace SecretsVault.Data
 {
+    using System;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -20,8 +22,8 @@
         {
             if(dbContextOptionsBuilder.IsConfigured == false)
             {
-                dbContextOptionsBuilder
-                    .UseSqlServer("Server=DESKTOP-LH7CK7C\\SQLEXPRESS;Database=SecretsVault;Integrated Security=true");
+                string migrationConnectionString = Environment.GetEnvironmentVariable("MigrationConnectionString");
+                dbContextOptionsBuilder.UseSqlServer(migrationConnectionString);
             }
         }
 
