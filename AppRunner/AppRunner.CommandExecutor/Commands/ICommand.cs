@@ -1,13 +1,12 @@
-﻿namespace AppRunner.CommandExecutor.Commands
+﻿namespace AppRunner.CommandExecutor.Commands;
+
+using System.Threading.Tasks;
+
+public interface ICommand
 {
-    using System.Threading.Tasks;
+    bool IsMatch(string command);
 
-    public interface ICommand
-    {
-        bool IsMatch(string command);
+    Task ExecuteAsync(string command);
 
-        Task ExecuteAsync(string command);
-
-        string GetDescription();
-    }
+    string GetDescription();
 }

@@ -1,74 +1,73 @@
-﻿namespace AppRunner.CommandExecutor
+﻿namespace AppRunner.CommandExecutor;
+
+using System;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+
+using DatabaseExtractorCore;
+
+using AppRunner.Data;
+using AppRunner.Services.Application;
+using AppRunner.CommandExecutor.Commands;
+using AppRunner.CommandExecutor.Services;
+
+public class Engine
 {
-    using System;
-    using System.Threading.Tasks;
+    private readonly ICommand[] commands;
+    private readonly IApplicationsService applicationsService;
 
-    using Microsoft.EntityFrameworkCore;
-
-    using DatabaseExtractorCore;
-
-    using AppRunner.Data;
-    using AppRunner.Services.Application;
-    using AppRunner.CommandExecutor.Commands;
-    using AppRunner.CommandExecutor.Services;
-
-    public class Engine
+    public Engine(string databaseType, string connectionString)
     {
-        private readonly ICommand[] commands;
-        private readonly IApplicationsService applicationsService;
+        DbContextOptionsBuilder optionsBuilder = DatabaseExtractor.GetOptionsBuilder(databaseType, connectionString);
+        this.applicationsService = new ApplicationsService(new ApplicationDbContext(optionsBuilder.Options));
+        this.commands = CommandsService.GetCommandPatterns(applicationsService);
+    }
 
-        public Engine(string databaseType, string connectionString)
+    public async Task RunAsync()
+    {
+        while (true)
         {
-            DbContextOptionsBuilder optionsBuilder = DatabaseExtractor.GetOptionsBuilder(databaseType, connectionString);
-            this.applicationsService = new ApplicationsService(new ApplicationDbContext(optionsBuilder.Options));
-            this.commands = CommandsService.GetCommandPatterns(applicationsService);
-        }
-
-        public async Task RunAsync()
-        {
-            while(true)
+            Console.Write("> ");
+            string command = Console.ReadLine().Trim();
+            if (command == "exit")
             {
-                Console.Write("> ");
-                string command = Console.ReadLine().Trim();
-                if(command == "exit")
-                {
-                    break;
-                }
-                else if(command == string.Empty)
-                {
-                    continue;
-                }
+                break;
+            }
+            else if (command == string.Empty)
+            {
+                continue;
+            }
 
-                try
-                {
-                    await ProcessCommand(command);
-                }
-                catch(Exception ex)
-                {
-                   Console.WriteLine(ex.Message); 
-                }
+            try
+            {
+                await ProcessCommand(command);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+
+    private async Task ProcessCommand(string command)
+    {
+        ICommand matchingCommand = null;
+        foreach (ICommand commandPattern in this.commands)
+        {
+            if (commandPattern.IsMatch(command) == true)
+            {
+                matchingCommand = commandPattern;
+                break;
             }
         }
 
-        private async Task ProcessCommand(string command)
+        if (matchingCommand == null)
         {
-            ICommand matchingCommand = null;
-            foreach(ICommand commandPattern in this.commands)
-            {
-                if(commandPattern.IsMatch(command) == true)
-                {
-                    matchingCommand = commandPattern;
-                    break;
-                }
-            }
-
-            if(matchingCommand == null)
-            {
-                Console.WriteLine("Invalid command");
-                return;
-            }
-
-            await matchingCommand.ExecuteAsync(command);
+            Console.WriteLine("Invalid command");
+            return;
         }
+
+        await matchingCommand.ExecuteAsync(command);
     }
 }

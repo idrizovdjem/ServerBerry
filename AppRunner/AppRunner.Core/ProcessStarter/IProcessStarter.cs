@@ -1,9 +1,8 @@
-﻿namespace AppRunner.Core.ProcessStarter
-{
-    using System.Diagnostics;
+﻿namespace AppRunner.Core.ProcessStarter;
 
-    public interface IProcessStarter
-    {
-        Process Start(string path);
-    }
+using System.Diagnostics;
+
+public interface IProcessStarter
+{
+    Process Start(string path);
 }

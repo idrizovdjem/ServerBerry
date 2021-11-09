@@ -1,13 +1,12 @@
-﻿namespace AppRunner.Core.ProcessStarter
-{
-    using System.Diagnostics;
+﻿namespace AppRunner.Core.ProcessStarter;
 
-    public class LinuxProcessStarter : IProcessStarter
+using System.Diagnostics;
+
+public class LinuxProcessStarter : IProcessStarter
+{
+    public Process Start(string path)
     {
-        public Process Start(string path)
-        {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo("sudo", path);
-            return Process.Start(processStartInfo);
-        }
+        ProcessStartInfo processStartInfo = new ProcessStartInfo("sudo", path);
+        return Process.Start(processStartInfo);
     }
 }

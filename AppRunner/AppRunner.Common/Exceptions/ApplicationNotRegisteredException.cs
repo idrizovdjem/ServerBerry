@@ -1,12 +1,11 @@
-namespace AppRunner.Common.Exceptions
-{
-    using System;
+namespace AppRunner.Common.Exceptions;
 
-    public class ApplicationNotRegisteredException : Exception
+using System;
+
+public class ApplicationNotRegisteredException : Exception
+{
+    public ApplicationNotRegisteredException(string name)
+        : base($"{name} is not registered as application")
     {
-        public ApplicationNotRegisteredException(string name)
-            : base($"{name} is not registered as application")
-        {
-        }
     }
 }

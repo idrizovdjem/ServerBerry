@@ -1,12 +1,11 @@
-﻿namespace AppRunner.Common.Exceptions
-{
-    using System;
+﻿namespace AppRunner.Common.Exceptions;
 
-    public class NotSupportedApplicationTypeException : Exception
+using System;
+
+public class NotSupportedApplicationTypeException : Exception
+{
+    public NotSupportedApplicationTypeException(string type)
+        : base($"{type} is not supported application type")
     {
-        public NotSupportedApplicationTypeException(string type)
-            : base($"{type} is not supported application type")
-        {
-        }
     }
 }

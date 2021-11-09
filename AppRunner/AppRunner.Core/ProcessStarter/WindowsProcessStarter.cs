@@ -1,18 +1,17 @@
-﻿namespace AppRunner.Core.ProcessStarter
+﻿namespace AppRunner.Core.ProcessStarter;
+
+using System.Diagnostics;
+
+public class WindowsProcessStarter : IProcessStarter
 {
-    using System.Diagnostics;
-
-    public class WindowsProcessStarter : IProcessStarter
+    public Process Start(string path)
     {
-        public Process Start(string path)
+        ProcessStartInfo processStartInfo = new ProcessStartInfo(path)
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(path)
-            {
-                Verb = "runas"
-            };
+            Verb = "runas"
+        };
 
-            Process process = Process.Start(processStartInfo);
-            return process;
-        }
+        Process process = Process.Start(processStartInfo);
+        return process;
     }
 }

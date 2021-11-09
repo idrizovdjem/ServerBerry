@@ -1,12 +1,11 @@
-﻿namespace AppRunner.Core.Loggers
-{
-    using System;
+﻿namespace AppRunner.Core.Loggers;
 
-    public class ConsoleLogger : ILogger
+using System;
+
+public class ConsoleLogger : ILogger
+{
+    public void Log(string message)
     {
-        public void Log(string message)
-        {
-            Console.WriteLine(message);
-        }
+        Console.WriteLine(message);
     }
 }

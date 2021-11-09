@@ -1,12 +1,11 @@
-﻿namespace AppRunner.Common.Exceptions
-{
-    using System;
+﻿namespace AppRunner.Common.Exceptions;
 
-    public class OSNotSupportedException : Exception
+using System;
+
+public class OSNotSupportedException : Exception
+{
+    public OSNotSupportedException()
+        : base("Your current OS is not supported")
     {
-        public OSNotSupportedException()
-            : base("Your current OS is not supported")
-        {
-        }
     }
 }

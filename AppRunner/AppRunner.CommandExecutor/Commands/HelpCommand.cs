@@ -1,39 +1,38 @@
-namespace AppRunner.CommandExecutor.Commands
+namespace AppRunner.CommandExecutor.Commands;
+
+using System;
+using System.Threading.Tasks;
+
+using AppRunner.CommandExecutor.Services;
+using AppRunner.Services.Application;
+
+public class HelpCommand : ICommand
 {
-    using System;
-    using System.Threading.Tasks;
-    
-    using AppRunner.CommandExecutor.Services;
-    using AppRunner.Services.Application;
+    private readonly IApplicationsService applicationsService;
 
-    public class HelpCommand : ICommand
+    public HelpCommand(IApplicationsService applicationsService)
     {
-        private readonly IApplicationsService applicationsService;
+        this.applicationsService = applicationsService;
+    }
 
-        public HelpCommand(IApplicationsService applicationsService)
+    public Task ExecuteAsync(string command)
+    {
+        ICommand[] allCommands = CommandsService.GetCommandPatterns(this.applicationsService);
+        foreach (ICommand commandObject in allCommands)
         {
-            this.applicationsService = applicationsService;
+            Console.WriteLine(commandObject.GetDescription());
         }
 
-        public  Task ExecuteAsync(string command)
-        {
-            ICommand[] allCommands = CommandsService.GetCommandPatterns(this.applicationsService);
-            foreach(ICommand commandObject in allCommands)
-            {
-                Console.WriteLine(commandObject.GetDescription());
-            }
+        return Task.CompletedTask;
+    }
 
-            return Task.CompletedTask;
-        }
+    public string GetDescription()
+    {
+        return "HELP\n\tDisplay all commands with documentation\n";
+    }
 
-        public string GetDescription()
-        {
-            return "HELP\n\tDisplay all commands with documentation\n";
-        }
-
-        public bool IsMatch(string command)
-        {
-            return command.ToLower() == "help";
-        }
+    public bool IsMatch(string command)
+    {
+        return command.ToLower() == "help";
     }
 }

@@ -1,101 +1,100 @@
-namespace AppRunner.CommandExecutor.Commands
+namespace AppRunner.CommandExecutor.Commands;
+
+using System;
+using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using AppRunner.Core;
+using AppRunner.Data.Models;
+using AppRunner.Core.Loggers;
+using AppRunner.Common.Exceptions;
+using AppRunner.Services.Application;
+
+public class RunCommand : ICommand
 {
-    using System;
-    using System.Text;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
+    private readonly IApplicationsService applicationsService;
 
-    using AppRunner.Core;
-    using AppRunner.Data.Models;
-    using AppRunner.Core.Loggers;
-    using AppRunner.Common.Exceptions;
-    using AppRunner.Services.Application;
-
-    public class RunCommand : ICommand
+    public RunCommand(IApplicationsService applicationsService)
     {
-        private readonly IApplicationsService applicationsService;
+        this.applicationsService = applicationsService;
+    }
 
-        public RunCommand(IApplicationsService applicationsService)
+    public async Task ExecuteAsync(string command)
+    {
+        string[] runArguments = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        Application[] applications = await this.GetApplicationsAsync(runArguments);
+        RunApplications(applications);
+    }
+
+    public string GetDescription()
+    {
+        StringBuilder stringBuilder = new StringBuilder("RUN\n");
+        stringBuilder.AppendLine("\tCreate app container instance and run applications");
+        stringBuilder.AppendLine("\tRUN ALL");
+        stringBuilder.AppendLine("\tRUN [App1] [App2] [App3] ...");
+
+        return stringBuilder.ToString();
+    }
+
+    public bool IsMatch(string command)
+    {
+        if (command.ToLower().StartsWith("run") == false)
         {
-           this.applicationsService = applicationsService; 
+            return false;
         }
 
-        public async Task ExecuteAsync(string command)
+        if (command.ToLower() == "run all")
         {
-            string[] runArguments = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            Application[] applications = await this.GetApplicationsAsync(runArguments);
-            RunApplications(applications);
+            return true;
         }
 
-        public string GetDescription()
-        {
-            StringBuilder stringBuilder = new StringBuilder("RUN\n");
-            stringBuilder.AppendLine("\tCreate app container instance and run applications");
-            stringBuilder.AppendLine("\tRUN ALL");
-            stringBuilder.AppendLine("\tRUN [App1] [App2] [App3] ...");
+        string[] runArguments = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return runArguments.Length > 1;
+    }
 
-            return stringBuilder.ToString();
+    private async Task<Application[]> GetApplicationsAsync(string[] runArguments)
+    {
+        if (runArguments[1].ToLower() == "all")
+        {
+            return await this.applicationsService.GetApplicationsAsync();
         }
 
-        public bool IsMatch(string command)
+        List<Application> applications = new List<Application>();
+        string[] applicationNames = runArguments.Skip(1).ToArray();
+        foreach (string name in applicationNames)
         {
-            if (command.ToLower().StartsWith("run") == false)
+            Application application = await this.applicationsService.GetByNameAsync(name);
+            if (application == null)
             {
-                return false;
+                throw new ApplicationNotRegisteredException(name);
             }
 
-            if (command.ToLower() == "run all")
-            {
-                return true;
-            }
-
-            string[] runArguments = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            return runArguments.Length > 1;
+            applications.Add(application);
         }
 
-        private async Task<Application[]> GetApplicationsAsync(string[] runArguments)
+        return applications.ToArray();
+    }
+
+    private static void RunApplications(Application[] applications)
+    {
+        AppsContainer appContainer = new AppsContainer(applications)
         {
-            if (runArguments[1].ToLower() == "all")
-            {
-                return await this.applicationsService.GetApplicationsAsync();
-            }
+            Logger = new ConsoleLogger()
+        };
 
-            List<Application> applications = new List<Application>();
-            string[] applicationNames = runArguments.Skip(1).ToArray();
-            foreach (string name in applicationNames)
-            {
-                Application application = await this.applicationsService.GetByNameAsync(name);
-                if (application == null)
-                {
-                    throw new ApplicationNotRegisteredException(name);
-                }
+        appContainer.StartApps();
 
-                applications.Add(application);
-            }
-
-            return applications.ToArray();
-        }
-
-        private static void RunApplications(Application[] applications)
+        while (true)
         {
-            AppsContainer appContainer = new AppsContainer(applications)
+            string input = Console.ReadLine();
+            if (input == "exit")
             {
-                Logger = new ConsoleLogger()
-            };
-
-            appContainer.StartApps();
-
-            while (true)
-            {
-                string input = Console.ReadLine();
-                if (input == "exit")
-                {
-                    break;
-                }
+                break;
             }
-
-            appContainer.StopApps();
         }
+
+        appContainer.StopApps();
     }
 }

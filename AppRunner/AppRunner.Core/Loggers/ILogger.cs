@@ -1,7 +1,6 @@
-﻿namespace AppRunner.Core.Loggers
+﻿namespace AppRunner.Core.Loggers;
+
+public interface ILogger
 {
-    public interface ILogger
-    {
-        void Log(string message);
-    }
+    void Log(string message);
 }

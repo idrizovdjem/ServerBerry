@@ -1,9 +1,8 @@
-﻿namespace AppRunner.CommandExecutor.Setup
-{
-    public class SetupOptions
-    {
-        public string DatabaseType { get; set; }
+﻿namespace AppRunner.CommandExecutor.Setup;
 
-        public string ConnectionString { get; set; }
-    }
+public class SetupOptions
+{
+    public string DatabaseType { get; set; }
+
+    public string ConnectionString { get; set; }
 }

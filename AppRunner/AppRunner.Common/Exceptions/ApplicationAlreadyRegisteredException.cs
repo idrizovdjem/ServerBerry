@@ -1,12 +1,11 @@
-﻿namespace AppRunner.Common.Exceptions
-{
-    using System;
+﻿namespace AppRunner.Common.Exceptions;
 
-    public class ApplicationAlreadyRegisteredException : Exception
+using System;
+
+public class ApplicationAlreadyRegisteredException : Exception
+{
+    public ApplicationAlreadyRegisteredException(string appName)
+        : base($"Application with name ({appName}) is already registered")
     {
-        public ApplicationAlreadyRegisteredException(string appName)
-            : base($"Application with name ({appName}) is already registered")
-        {
-        }
     }
 }

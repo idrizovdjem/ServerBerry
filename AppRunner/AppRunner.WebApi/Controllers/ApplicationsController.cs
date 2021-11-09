@@ -1,26 +1,25 @@
-﻿namespace AppRunner.WebApi.Controllers
+﻿namespace AppRunner.WebApi.Controllers;
+
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+
+using AppRunner.Data.Models;
+using AppRunner.Services.Application;
+
+public class ApplicationsController : BaseController
 {
-    using System.Threading.Tasks;
-    
-    using Microsoft.AspNetCore.Mvc;
+    private readonly IApplicationsService applicationsService;
 
-    using AppRunner.Data.Models;
-    using AppRunner.Services.Application;
-
-    public class ApplicationsController : BaseController
+    public ApplicationsController(IApplicationsService applicationsService)
     {
-        private readonly IApplicationsService applicationsService;
+        this.applicationsService = applicationsService;
+    }
 
-        public ApplicationsController(IApplicationsService applicationsService)
-        {
-            this.applicationsService = applicationsService;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> OnGetAsync()
-        {
-            Application[] applications = await this.applicationsService.GetApplicationsAsync();
-            return Ok(applications);
-        }
+    [HttpGet]
+    public async Task<ActionResult> OnGetAsync()
+    {
+        Application[] applications = await this.applicationsService.GetApplicationsAsync();
+        return Ok(applications);
     }
 }

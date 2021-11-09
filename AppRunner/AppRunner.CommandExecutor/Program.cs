@@ -1,42 +1,41 @@
-﻿namespace AppRunner.CommandExecutor
+﻿namespace AppRunner.CommandExecutor;
+
+using System;
+using System.Threading.Tasks;
+
+public class Program
 {
-    using System;
-    using System.Threading.Tasks;
+    private static string databaseType;
+    private static string connectionString;
 
-    public class Program
+    public static async Task Main(string[] args)
     {
-        private static string databaseType;
-        private static string connectionString;
+        Setup(args);
+        Engine engine = new Engine(databaseType, connectionString);
+        await engine.RunAsync();
+    }
 
-        public static async Task Main(string[] args)
+    private static void Setup(string[] args)
+    {
+        if (args.Length < 2)
         {
-            Setup(args);
-            Engine engine = new Engine(databaseType, connectionString);
-            await engine.RunAsync();
+            throw new ArgumentException("Database type and connection string are required arguments");
         }
 
-        private static void Setup(string[] args)
+        string databaseTypeArg = args[0];
+        string connectionStringArg = args[1];
+
+        if (string.IsNullOrWhiteSpace(databaseTypeArg) == true)
         {
-            if(args.Length < 2)
-            {
-                throw new ArgumentException("Database type and connection string are required arguments");
-            }
-
-            string databaseTypeArg = args[0];
-            string connectionStringArg = args[1];
-
-            if(string.IsNullOrWhiteSpace(databaseTypeArg) == true)
-            {
-                throw new ArgumentException("Database type cannot be empty");
-            }
-
-            if(string.IsNullOrWhiteSpace(connectionStringArg) == true)
-            {
-                throw new ArgumentException("Connection string cannot be empty");
-            }
-
-            databaseType = databaseTypeArg;
-            connectionString = connectionStringArg;
+            throw new ArgumentException("Database type cannot be empty");
         }
+
+        if (string.IsNullOrWhiteSpace(connectionStringArg) == true)
+        {
+            throw new ArgumentException("Connection string cannot be empty");
+        }
+
+        databaseType = databaseTypeArg;
+        connectionString = connectionStringArg;
     }
 }

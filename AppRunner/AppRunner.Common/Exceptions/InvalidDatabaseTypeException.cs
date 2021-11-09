@@ -1,12 +1,11 @@
-﻿namespace AppRunner.Common.Exceptions
-{
-    using System;
+﻿namespace AppRunner.Common.Exceptions;
 
-    public class InvalidDatabaseTypeException : Exception
+using System;
+
+public class InvalidDatabaseTypeException : Exception
+{
+    public InvalidDatabaseTypeException(string databaseType)
+        : base(databaseType + " is invalid database type")
     {
-        public InvalidDatabaseTypeException(string databaseType)
-            : base(databaseType + " is invalid database type")
-        {
-        }
     }
 }

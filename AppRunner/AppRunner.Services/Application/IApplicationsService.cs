@@ -1,22 +1,21 @@
-﻿namespace AppRunner.Services.Application
+﻿namespace AppRunner.Services.Application;
+
+using System.Threading.Tasks;
+
+using AppRunner.Data.Models;
+using AppRunner.Common.Enums;
+
+public interface IApplicationsService
 {
-    using System.Threading.Tasks;
+    Task<Application[]> GetApplicationsAsync();
 
-    using AppRunner.Data.Models;
-    using AppRunner.Common.Enums;
+    Task<bool> IsNameAvailableAsync(string name);
 
-    public interface IApplicationsService
-    {
-        Task<Application[]> GetApplicationsAsync();
+    Task AddAsync(string name, string path, AppType appType);
 
-        Task<bool> IsNameAvailableAsync(string name);
+    Task<bool> RemoveAsync(string name);
 
-        Task AddAsync(string name, string path, AppType appType);
+    Task<bool> UpdateNameAsync(string oldName, string newName);
 
-        Task<bool> RemoveAsync(string name);
-
-       Task<bool> UpdateNameAsync(string oldName, string newName); 
-
-       Task<Application> GetByNameAsync(string name);
-    }
+    Task<Application> GetByNameAsync(string name);
 }

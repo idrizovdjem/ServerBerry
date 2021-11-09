@@ -1,50 +1,49 @@
-﻿namespace AppRunner.CommandExecutor.Commands
+﻿namespace AppRunner.CommandExecutor.Commands;
+
+using System;
+using System.Threading.Tasks;
+
+using AppRunner.Services.Application;
+
+public class RemoveCommand : ICommand
 {
-    using System;
-    using System.Threading.Tasks;
+    private readonly IApplicationsService applicationsService;
 
-    using AppRunner.Services.Application;
-
-    public class RemoveCommand : ICommand
+    public RemoveCommand(IApplicationsService applicationsService)
     {
-        private readonly IApplicationsService applicationsService;
+        this.applicationsService = applicationsService;
+    }
 
-        public RemoveCommand(IApplicationsService applicationsService)
+    public async Task ExecuteAsync(string command)
+    {
+        string[] commandParts = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        string appName = commandParts[1];
+        bool isAppRemoved = await this.applicationsService.RemoveAsync(appName);
+
+        string message = isAppRemoved ? "Application removed successfully" : "Application not found";
+        Console.WriteLine(message);
+    }
+
+    public string GetDescription()
+    {
+        return "REMOVE\n\tRemove application with provided name\n\tREMOVE [Application Name]\n";
+    }
+
+    public bool IsMatch(string command)
+    {
+        if (command.ToLower().StartsWith("remove") == false)
         {
-            this.applicationsService = applicationsService;
+            return false;
         }
 
-        public async Task ExecuteAsync(string command)
-        {
-            string[] commandParts = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-            string appName = commandParts[1];
-            bool isAppRemoved = await this.applicationsService.RemoveAsync(appName);
+        string[] commandParts = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        string appName = commandParts[1];
 
-            string message = isAppRemoved ? "Application removed successfully" : "Application not found";
-            Console.WriteLine(message);
+        if (string.IsNullOrWhiteSpace(appName) == true)
+        {
+            throw new ArgumentException($"Application name cannot be empty");
         }
 
-        public string GetDescription()
-        {
-            return "REMOVE\n\tRemove application with provided name\n\tREMOVE [Application Name]\n";
-        }
-
-        public bool IsMatch(string command)
-        {
-            if(command.ToLower().StartsWith("remove") == false)
-            {
-                return false;
-            }
-
-            string[] commandParts = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-            string appName = commandParts[1];
-
-            if(string.IsNullOrWhiteSpace(appName) == true)
-            {
-                throw new ArgumentException($"Application name cannot be empty");
-            }
-
-            return true;
-        }
+        return true;
     }
 }
