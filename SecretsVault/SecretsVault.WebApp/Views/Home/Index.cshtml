@@ -1,0 +1,24 @@
+﻿@using SecretsVault.ViewModels.Application
+@model ApplicationViewModel[]
+
+@{ 
+    ViewData["Title"] = "Home";
+}
+
+<section>
+    <h3>Created applications</h3>
+
+    <table class="table table-hover">
+        <tbody>
+            @foreach (ApplicationViewModel application in Model)
+            {
+            <tr>
+                <td>
+                    <a asp-controller="Applications" asp-action="Overview" asp-route-applicationId="@application.Id">@application.Name</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</section>

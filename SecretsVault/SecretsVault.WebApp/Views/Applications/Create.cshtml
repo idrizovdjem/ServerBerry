@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Create Application";
+}
+
+<main class="container">
+    <form class="col-6 offset-3" asp-controller="Applications" asp-action="Create" method="post" >
+        <h3 class="mb-4">Create application</h3>
+
+        <input class="form-control" placeholder="Application name" id="applicationNameInput" name="Name" autocomplete="off" />
+        <div id="applicationNameError" class="text-danger">Application name is not available</div>
+
+        <button class="btn btn-primary mt-3" id="createButton">Create</button>
+        <button class="btn btn-secondary mt-3" id="cancelButton">Cancel</button>
+    </form>
+</main>
+
+@section Scripts {
+    <script async>
+        const applicationNameInput = document.getElementById('applicationNameInput');
+        const applicationNameError = document.getElementById('applicationNameError');
+        const createButton = document.getElementById('createButton');
+        const cancelButton = document.getElementById('cancelButton');
+
+        cancelButton.onclick = (event) => {
+            event.preventDefault();
+            location.replace("/");
+        }
+
+        applicationNameError.style.display = 'none';
+
+        applicationNameInput.oninput = async (event) => {
+            const value = event.target.value;
+            if (value.length < 3) {
+                return;
+            }
+
+            const isAvailable = await isNameAvailable(value);
+            const errorVisibility = isAvailable == false ? 'block' : 'none';
+
+            createButton.disabled = isAvailable == false;
+            applicationNameError.style.display = errorVisibility;
+        }
+
+        async function isNameAvailable(value) {
+            return await fetch('/api/applications/isNameAvailable', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: value } )
+            })
+                .then(response => response.json())
+                .then(data => data)
+                .catch(error => false);
+        }
+    </script>
+}
