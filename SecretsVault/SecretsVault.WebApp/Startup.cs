@@ -11,6 +11,7 @@ using DatabaseExtractorCore;
 using SecretsVault.Data;
 using SecretsVault.Data.Models;
 using SecretsVault.Services.Core;
+using Microsoft.EntityFrameworkCore;
 
 public class Startup
 {
@@ -24,6 +25,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDbContext<ApplicationDbContext>(DatabaseExtractor.GetOptionsBuilderAction(this.Configuration));
+
         services
             .AddDefaultIdentity<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
