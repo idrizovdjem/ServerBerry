@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "AppRunner.Core": {
+      "commandName": "Project"
+    }
+  }
+}

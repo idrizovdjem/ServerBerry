@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DatabaseExtractorCore" Version="1.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppRunner.Common\AppRunner.Common.csproj" />
+    <ProjectReference Include="..\AppRunner.Core\AppRunner.Core.csproj" />
+    <ProjectReference Include="..\AppRunner.Data\AppRunner.Data.csproj" />
+    <ProjectReference Include="..\AppRunner.Services\AppRunner.Services.csproj" />
+  </ItemGroup>
+
+</Project>

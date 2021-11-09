@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppRunner.Data\AppRunner.Data.csproj" />
+    <ProjectReference Include="..\AppRunner.ViewModels\AppRunner.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
