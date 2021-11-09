@@ -1,8 +1,7 @@
 ﻿namespace SecretsVault.Data
 {
-    using System;
-
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     using SecretsVault.Data.Models;
@@ -22,7 +21,11 @@
         {
             if(dbContextOptionsBuilder.IsConfigured == false)
             {
-                string migrationConnectionString = Environment.GetEnvironmentVariable("MigrationConnectionString");
+                IConfiguration configuration = new ConfigurationBuilder()
+                    .AddJsonFile("secrets.json")
+                    .Build();
+
+                string migrationConnectionString = configuration["MigrationsConnectionString"];
                 dbContextOptionsBuilder.UseSqlServer(migrationConnectionString);
             }
         }
