@@ -2,7 +2,7 @@
 @using SecretsVault.ViewModels.Secret
 @model ApplicationOverviewViewModel
 
-@{ 
+@{
     ViewData["Title"] = "Overview";
 }
 
@@ -10,12 +10,13 @@
     pre {
         margin: 0;
         white-space: pre;
+        font-family: 'Open Sans', sans-serif;
     }
 </style>
 
 <main class="container">
     <h3 class="mb-3">@Model.Name</h3>
-    
+
     <a class="btn btn-primary text-light" asp-controller="Secrets" asp-action="Create" asp-route-applicationId="@Model.Id"><i class="fas fa-plus mr-3"></i>Add secret</a>
 
     <a class="btn btn-danger text-light" asp-controller="Applications" asp-action="Delete" asp-route-applicationId="@Model.Id"><i class="fas fa-trash mr-3"></i>Delete application</a>
@@ -30,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(SecretOverviewViewModel secret in Model.Secrets)
+            @foreach (SecretOverviewViewModel secret in Model.Secrets)
             {
                 <tr>
                     <td class="align-middle"><pre>@secret.Key</pre></td>
@@ -41,7 +42,7 @@
                         <a asp-controller="Secrets" asp-action="Edit" asp-route-secretId="@secret.Id" class="btn btn-secondary text-light editElement"><i class="fas fa-pen"></i></a>
                         <button class="btn btn-danger deleteElement"><i class="fas fa-trash"></i></button>
                     </td>
-                    <input type="hidden" value="@secret.Id"/>
+                    <input type="hidden" value="@secret.Id" />
                 </tr>
             }
         </tbody>
@@ -49,72 +50,72 @@
 </main>
 
 @section Scripts {
-    <script async>
-        function handleShowHideElements() {
-            const passwordShowHideElements = Array.from(document.getElementsByClassName('passwordShowHideElement'));
-            passwordShowHideElements.forEach(element => {
-                let visible = false;
+<script async>
+    function handleShowHideElements() {
+        const passwordShowHideElements = Array.from(document.getElementsByClassName('passwordShowHideElement'));
+        passwordShowHideElements.forEach(element => {
+            let visible = false;
 
-                element.onclick = async (event) => {
-                    visible = !visible;
-                    element.innerHTML = visible ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+            element.onclick = async (event) => {
+                visible = !visible;
+                element.innerHTML = visible ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
 
-                    let secretValue = '**********';
-                    const rowElement = element.parentElement.parentElement;
+                let secretValue = '**********';
+                const rowElement = element.parentElement.parentElement;
 
-                    if (visible === true) {
-                        const key = rowElement.children[0].innerText;
-                        const environment = rowElement.children[1].innerText;
-                        secretValue = await getSecretValue(key, environment);
-                    }
-
-                    rowElement.children[2].innerText = secretValue
+                if (visible === true) {
+                    const key = rowElement.children[0].innerText;
+                    const environment = rowElement.children[1].innerText;
+                    secretValue = await getSecretValue(key, environment);
                 }
-            });
-        }
 
-        function handleDeleteElements() {
-            const deleteElements = Array.from(document.getElementsByClassName('deleteElement'));
-            deleteElements.forEach((element, index) => {
-                element.onclick = async (event) => {
-                    const confirmDelete = confirm('Are you sure you want to delete this secret?');
-                    if (confirmDelete === false) {
-                        return;
-                    }
+                rowElement.children[2].innerText = secretValue
+            }
+        });
+    }
 
-                    const parentElement = element.parentElement.parentElement;
-                    const secretId = parentElement.lastElementChild.value;
-                    deleteSecret(secretId);
-                    parentElement.remove();
+    function handleDeleteElements() {
+        const deleteElements = Array.from(document.getElementsByClassName('deleteElement'));
+        deleteElements.forEach((element, index) => {
+            element.onclick = async (event) => {
+                const confirmDelete = confirm('Are you sure you want to delete this secret?');
+                if (confirmDelete === false) {
+                    return;
                 }
-            });
-        }
 
-        handleShowHideElements();
-        handleDeleteElements();
+                const parentElement = element.parentElement.parentElement;
+                const secretId = parentElement.lastElementChild.value;
+                deleteSecret(secretId);
+                parentElement.remove();
+            }
+        });
+    }
 
-        async function getSecretValue(key, environment) {
-            return await fetch('/api/secrets/GetSecretValue', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ key, environment, applicationId: '@Model.Id' })
-            })
-                .then(response => response.text())
-                .then(data => data)
-                .catch(error => '');
-        }
+    handleShowHideElements();
+    handleDeleteElements();
 
-        function deleteSecret(secretId) {
-            fetch('/api/secrets/DeleteSecret', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ secretId })
-            })
-                .catch(error => '');
-        }
-    </script>
+    async function getSecretValue(key, environment) {
+        return await fetch('/api/secrets/GetSecretValue', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ key, environment, applicationId: '@Model.Id' })
+        })
+            .then(response => response.text())
+            .then(data => data)
+            .catch(error => '');
+    }
+
+    function deleteSecret(secretId) {
+        fetch('/api/secrets/DeleteSecret', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ secretId })
+        })
+            .catch(error => '');
+    }
+</script>
 }
