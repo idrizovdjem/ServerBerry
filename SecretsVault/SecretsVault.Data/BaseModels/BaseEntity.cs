@@ -1,10 +1,9 @@
-﻿namespace SecretsVault.Data.BaseModels
-{
-    using System.ComponentModel.DataAnnotations;
+﻿namespace SecretsVault.Data.BaseModels;
 
-    public class BaseEntity<TKey> : IEntity<TKey>
-    {
-        [Key]
-        public TKey Id { get; set; }
-    }
+using System.ComponentModel.DataAnnotations;
+
+public class BaseEntity<TKey> : IEntity<TKey>
+{
+    [Key]
+    public TKey Id { get; set; }
 }

@@ -1,11 +1,10 @@
-﻿namespace SecretsVault.ViewModels.Secret
+﻿namespace SecretsVault.ViewModels.Secret;
+
+public class SecretOverviewViewModel
 {
-    public class SecretOverviewViewModel
-    {
-        public string Id { get; set; }
+    public string Id { get; set; }
 
-        public string Key { get; set; }
+    public string Key { get; set; }
 
-        public string Environment { get; set; }
-    }
+    public string Environment { get; set; }
 }

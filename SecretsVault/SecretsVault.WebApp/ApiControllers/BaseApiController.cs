@@ -1,11 +1,10 @@
-﻿namespace SecretsVault.WebApp.ApiControllers
-{
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
+﻿namespace SecretsVault.WebApp.ApiControllers;
 
-    [Authorize]
-    [ApiController]
-    public abstract class BaseApiController : Controller
-    {
-    }
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
+[Authorize]
+[ApiController]
+public abstract class BaseApiController : Controller
+{
 }

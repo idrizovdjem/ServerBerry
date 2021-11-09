@@ -1,8 +1,7 @@
-﻿namespace SecretsVault.Data.Models
-{
-    using Microsoft.AspNetCore.Identity;
+﻿namespace SecretsVault.Data.Models;
 
-    public class ApplicationUser : IdentityUser
-    {
-    }
+using Microsoft.AspNetCore.Identity;
+
+public class ApplicationUser : IdentityUser
+{
 }

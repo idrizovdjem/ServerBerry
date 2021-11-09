@@ -1,7 +1,6 @@
-﻿namespace SecretsVault.Data.BaseModels
+﻿namespace SecretsVault.Data.BaseModels;
+
+public interface IEntity<TKey>
 {
-    public interface IEntity<TKey>
-    {
-        TKey Id { get; set; }
-    }
+    TKey Id { get; set; }
 }

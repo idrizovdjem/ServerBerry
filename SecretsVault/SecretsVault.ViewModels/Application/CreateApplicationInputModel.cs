@@ -1,10 +1,9 @@
-﻿namespace SecretsVault.ViewModels.Application
-{
-    using System.ComponentModel.DataAnnotations;
+﻿namespace SecretsVault.ViewModels.Application;
 
-    public class CreateApplicationInputModel
-    {
-        [Required]
-        public string Name { get; set; }
-    }
+using System.ComponentModel.DataAnnotations;
+
+public class CreateApplicationInputModel
+{
+    [Required]
+    public string Name { get; set; }
 }

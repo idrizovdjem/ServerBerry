@@ -1,10 +1,9 @@
-﻿namespace SecretsVault.ViewModels.Secret
-{
-    using System.ComponentModel.DataAnnotations;
+﻿namespace SecretsVault.ViewModels.Secret;
 
-    public class DeleteSecretInputModel
-    {
-        [Required]
-        public string SecretId { get; set; }
-    }
+using System.ComponentModel.DataAnnotations;
+
+public class DeleteSecretInputModel
+{
+    [Required]
+    public string SecretId { get; set; }
 }

@@ -1,13 +1,12 @@
-﻿namespace SecretsVault.ViewModels.Application
+﻿namespace SecretsVault.ViewModels.Application;
+
+using SecretsVault.ViewModels.Secret;
+
+public class ApplicationOverviewViewModel
 {
-    using SecretsVault.ViewModels.Secret;
+    public string Id { get; set; }
 
-    public class ApplicationOverviewViewModel
-    {
-        public string Id { get; set; }
+    public string Name { get; set; }
 
-        public string Name { get; set; }
-
-        public SecretOverviewViewModel[] Secrets { get; set; }
-    }
+    public SecretOverviewViewModel[] Secrets { get; set; }
 }

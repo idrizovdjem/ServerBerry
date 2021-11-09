@@ -1,27 +1,26 @@
-﻿namespace SecretsVault.WebApp.ApiControllers
+﻿namespace SecretsVault.WebApp.ApiControllers;
+
+using System.Threading.Tasks;
+using System.Security.Claims;
+
+using Microsoft.AspNetCore.Mvc;
+
+using SecretsVault.Services.Core;
+using SecretsVault.ViewModels.Application;
+
+[Route("api/applications/[action]")]
+public class ApplicationsApiController : BaseApiController
 {
-    using System.Threading.Tasks;
-    using System.Security.Claims;
+    private readonly IApplicationsService applicationsService;
 
-    using Microsoft.AspNetCore.Mvc;
-
-    using SecretsVault.Services.Core;
-    using SecretsVault.ViewModels.Application;
-
-    [Route("api/applications/[action]")]
-    public class ApplicationsApiController : BaseApiController
+    public ApplicationsApiController(IApplicationsService applicationsService)
     {
-        private readonly IApplicationsService applicationsService;
+        this.applicationsService = applicationsService;
+    }
 
-        public ApplicationsApiController(IApplicationsService applicationsService)
-        {
-            this.applicationsService = applicationsService;
-        }
-
-        public async Task<bool> IsNameAvailable(CheckApplicationNameInputModel input)
-        {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return await this.applicationsService.IsNameAvailableAsync(input.Name, userId);
-        }
+    public async Task<bool> IsNameAvailable(CheckApplicationNameInputModel input)
+    {
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return await this.applicationsService.IsNameAvailableAsync(input.Name, userId);
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace SecretsVault.ViewModels.Secret
-{
-    using System.ComponentModel.DataAnnotations;
+﻿namespace SecretsVault.ViewModels.Secret;
+ 
+using System.ComponentModel.DataAnnotations;
     
     public class GetSecretValueInputModel
     {
@@ -13,4 +13,3 @@
         [Required]
         public string Environment { get; set; }
     }
-}

@@ -1,29 +1,28 @@
-﻿namespace SecretsVault.WebApp.Controllers
+﻿namespace SecretsVault.WebApp.Controllers;
+
+using System.Threading.Tasks;
+using System.Security.Claims;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
+using SecretsVault.Services.Core;
+using SecretsVault.ViewModels.Application;
+
+[Authorize]
+public class HomeController : Controller
 {
-    using System.Threading.Tasks;
-    using System.Security.Claims;
+    private readonly IApplicationsService applicationsService;
 
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
-
-    using SecretsVault.Services.Core;
-    using SecretsVault.ViewModels.Application;
-
-    [Authorize]
-    public class HomeController : Controller
+    public HomeController(IApplicationsService applicationsService)
     {
-        private readonly IApplicationsService applicationsService;
+        this.applicationsService = applicationsService;
+    }
 
-        public HomeController(IApplicationsService applicationsService)
-        {
-            this.applicationsService = applicationsService;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ApplicationViewModel[] applications = await this.applicationsService.GetAllAsync(userId);
-            return View(applications);
-        }
+    public async Task<IActionResult> Index()
+    {
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        ApplicationViewModel[] applications = await this.applicationsService.GetAllAsync(userId);
+        return View(applications);
     }
 }

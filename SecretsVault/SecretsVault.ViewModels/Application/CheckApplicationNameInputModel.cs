@@ -1,7 +1,6 @@
-﻿namespace SecretsVault.ViewModels.Application
+﻿namespace SecretsVault.ViewModels.Application;
+
+public class CheckApplicationNameInputModel
 {
-    public class CheckApplicationNameInputModel
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

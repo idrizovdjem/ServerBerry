@@ -1,25 +1,23 @@
+namespace SecretsVault.Services.Core;
 
-namespace SecretsVault.Services.Core
+using System.Threading.Tasks;
+
+using SecretsVault.ViewModels.Key;
+using SecretsVault.ViewModels.Secret;
+
+public interface ISecretsService
 {
-    using System.Threading.Tasks;
+    Task<bool> IsKeyAvailableAsync(CheckKeyInputModel input);
 
-    using SecretsVault.ViewModels.Key;
-    using SecretsVault.ViewModels.Secret;
+    Task CreateAsync(CreateSecretInputModel input);
 
-    public interface ISecretsService
-    {
-        Task<bool> IsKeyAvailableAsync(CheckKeyInputModel input);
+    Task<string> GetValueAsync(GetSecretValueInputModel input);
 
-        Task CreateAsync(CreateSecretInputModel input);
+    Task<bool> DeleteAsync(string secretId, string userId);
 
-        Task<string> GetValueAsync(GetSecretValueInputModel input);
+    Task DeleteAllAsync(string applicationId);
 
-        Task<bool> DeleteAsync(string secretId, string userId);
+    Task<EditSecretInputModel> GetForEditAsync(string secretId);
 
-        Task DeleteAllAsync(string applicationId);
-
-        Task<EditSecretInputModel> GetForEditAsync(string secretId);
-
-        Task EditAsync(EditSecretInputModel input);
-    }
+    Task EditAsync(EditSecretInputModel input);
 }

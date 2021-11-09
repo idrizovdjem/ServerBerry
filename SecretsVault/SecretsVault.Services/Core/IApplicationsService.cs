@@ -1,23 +1,22 @@
-﻿namespace SecretsVault.Services.Core
+﻿namespace SecretsVault.Services.Core;
+
+using System.Threading.Tasks;
+
+using SecretsVault.ViewModels.Application;
+
+public interface IApplicationsService
 {
-    using System.Threading.Tasks;
+    Task<bool> IsNameAvailableAsync(string name, string userId);
 
-    using SecretsVault.ViewModels.Application;
+    Task CreateAsync(CreateApplicationInputModel input, string userId);
 
-    public interface IApplicationsService
-    {
-        Task<bool> IsNameAvailableAsync(string name, string userId);
+    Task<bool> RemoveAsync(string applicationId, string userId);
 
-        Task CreateAsync(CreateApplicationInputModel input, string userId);
+    Task<ApplicationViewModel[]> GetAllAsync(string userId);
 
-        Task<bool> RemoveAsync(string applicationId, string userId);
+    Task<ApplicationOverviewViewModel> GetByIdAsync(string id, string userId);
 
-        Task<ApplicationViewModel[]> GetAllAsync(string userId);
+    Task<DeletePhraseViewModel> GetDeletePhraseAsync(string id, string userId);
 
-        Task<ApplicationOverviewViewModel> GetByIdAsync(string id, string userId);
-
-        Task<DeletePhraseViewModel> GetDeletePhraseAsync(string id, string userId);
-
-        Task<bool> DeleteAsync(string applicationId, string userId);
-    }
+    Task<bool> DeleteAsync(string applicationId, string userId);
 }
