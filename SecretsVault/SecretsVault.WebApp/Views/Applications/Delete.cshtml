@@ -26,15 +26,5 @@
 </main>
 
 @section Scripts {
-    <script>
-        const deleteButton = document.getElementById('deleteButton');
-        const phraseInput = document.getElementById('phraseInput');
-
-        deleteButton.disabled = true;
-
-        phraseInput.oninput = (event) => {
-            const value = event.target.value;
-            deleteButton.disabled = value !== '@($"{Model.CreatorEmail}/{Model.ApplicationName}")';
-        }
-    </script>
+    <script src="~/js/Applications/Delete.js" creatorEmail="@Model.CreatorEmail" applicationName="@Model.ApplicationName"></script>
 }
