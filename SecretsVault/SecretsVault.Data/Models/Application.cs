@@ -23,5 +23,8 @@ public class Application : BaseEntity<string>
 
     public virtual ApplicationUser Creator { get; set; }
 
+    [Required]
+    public string SecretKey { get; set; }
+
     public virtual ICollection<Secret> Secrets { get; set; }
 }

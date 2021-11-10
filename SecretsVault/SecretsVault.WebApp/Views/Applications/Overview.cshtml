@@ -21,6 +21,8 @@
 
     <a class="btn btn-danger text-light" asp-controller="Applications" asp-action="Delete" asp-route-applicationId="@Model.Id"><i class="fas fa-trash mr-3"></i>Delete application</a>
 
+    <button class="btn btn-info" id="copyKeyButton"><i class="fas fa-key mr-3"></i>Copy secret key</button>
+
     <table class="table table-striped table-hover mt-3">
         <thead>
             <tr>
@@ -52,6 +54,37 @@
 @section Scripts {
 <script async>
     function handleShowHideElements() {
+        const copyKeyButton = document.getElementById('copyKeyButton');
+        copyKeyButton.addEventListener('click', async () => {
+            const secretKeyResponse = await getSecretKey();
+            if(secretKeyResponse.successfull === false) {
+                alert(secretKeyResponse.errorMessage);
+                return;
+            }
+
+            const secretKey = secretKeyResponse.key;
+            navigator.clipboard.writeText(secretKey);
+        });
+
+        async function getSecretKey() {
+            return fetch('/api/applications/GetSecretKey?applicationId=@Model.Id')
+                .then(response => response.text())
+                .then(data => {
+                    return {
+                        successfull: true, 
+                        key: data, 
+                        errorMessage: '' 
+                    };
+                })
+                .catch(error => {
+                    return {
+                        successfull: false,
+                        key: null,
+                        errorMessage: 'Something went wrong getting the secret key'
+                    };
+                });
+        }
+
         const passwordShowHideElements = Array.from(document.getElementsByClassName('passwordShowHideElement'));
         passwordShowHideElements.forEach(element => {
             let visible = false;

@@ -19,4 +19,6 @@ public interface IApplicationsService
     Task<DeletePhraseViewModel> GetDeletePhraseAsync(string id, string userId);
 
     Task<bool> DeleteAsync(string applicationId, string userId);
+
+    Task<string> GetSecretKeyAsync(string applicationId, string userId);
 }

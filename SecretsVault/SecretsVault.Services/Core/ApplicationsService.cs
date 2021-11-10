@@ -1,5 +1,6 @@
 ﻿namespace SecretsVault.Services.Core;
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,7 +27,8 @@ public class ApplicationsService : IApplicationsService
         Application application = new Application()
         {
             Name = input.Name,
-            CreatorId = userId
+            CreatorId = userId,
+            SecretKey = Guid.NewGuid().ToString()
         };
 
         await this.context.Applications.AddAsync(application);
@@ -118,5 +120,15 @@ public class ApplicationsService : IApplicationsService
         this.context.Applications.Remove(application);
         await this.context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<string> GetSecretKeyAsync(string applicationId, string userId)
+    {
+        string secretKey = await this.context.Applications
+            .Where(a => a.Id == applicationId && a.CreatorId == userId)
+            .Select(a => a.SecretKey)
+            .FirstOrDefaultAsync();
+
+        return secretKey ?? string.Empty;
     }
 }

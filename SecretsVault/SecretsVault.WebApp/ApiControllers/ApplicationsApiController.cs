@@ -23,4 +23,17 @@ public class ApplicationsApiController : BaseApiController
         string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         return await this.applicationsService.IsNameAvailableAsync(input.Name, userId);
     }
+
+    public async Task<IActionResult> GetSecretKey(string applicationId)
+    {
+        if(string.IsNullOrWhiteSpace(applicationId) == true)
+        {
+            return BadRequest();
+        }
+
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        string secretKey = await this.applicationsService.GetSecretKeyAsync(applicationId, userId);
+
+        return Ok(secretKey);
+    }
 }

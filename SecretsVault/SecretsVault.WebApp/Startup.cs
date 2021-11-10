@@ -11,7 +11,6 @@ using DatabaseExtractorCore;
 using SecretsVault.Data;
 using SecretsVault.Data.Models;
 using SecretsVault.Services.Core;
-using Microsoft.EntityFrameworkCore;
 
 public class Startup
 {
