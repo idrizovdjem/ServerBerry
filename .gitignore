@@ -2,3 +2,4 @@
 /SecretsVault/SecretsVault.Data/secrets.json
 /AppRunner/AppRunner.Data/secrets.json
 /AppRunner/TestApplications
+/SecretsVault/SecretsVault.TestConsole
