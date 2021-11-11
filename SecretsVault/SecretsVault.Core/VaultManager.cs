@@ -79,6 +79,26 @@ public class VaultManager
         return responseModel.Result;
     }
 
+    public async Task CreateSecretAsync(string key, string environment, string value)
+    {
+        CreateSecretInputModel inputModel = new CreateSecretInputModel()
+        {
+            Key = key,
+            Environment = environment,
+            Value = value,
+            ApplicationId = applicationId
+        };
+
+        CreateSecretResponseModel responseModel = await ApiEndpointConstants.CreateSecretEndpoint
+            .PostJsonAsync(inputModel)
+            .ReceiveJson<CreateSecretResponseModel>();
+
+        if(responseModel.Successfull == false)
+        {
+            throw new RequestFailedException(ApiEndpointConstants.CreateSecretEndpoint, responseModel.ErrorMessage);
+        }
+    }
+
     private static void ValidateKeyAndEnvironment(string key, string environment)
     {
         if (string.IsNullOrWhiteSpace(key) == true)

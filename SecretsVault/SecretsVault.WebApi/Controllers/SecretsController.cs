@@ -39,13 +39,47 @@ public class SecretsController : ControllerBase
         };
     }
 
+    [HttpPost]
     public async Task<SecretExistsResponseModel> Exists(SecretExistsInputModel input)
     {
         bool secretExists = await this.secretsService.ExistsAsync(input);
         return new SecretExistsResponseModel()
         {
             Successfull = true,
-            Result = secretExists
+            Result = secretExists,
+            StatusCode = 200
+        };
+    }
+
+    [HttpPost]
+    public async Task<CreateSecretResponseModel> Create(CreateSecretInputModel input)
+    {
+        SecretExistsInputModel secretExistsModel = new SecretExistsInputModel()
+        {
+            ApplicationId = input.ApplicationId,
+            Environment = input.Environment,
+            Key = input.Key,
+        };
+
+        bool secretExists = await this.secretsService.ExistsAsync(secretExistsModel);
+        if(secretExists == true)
+        {
+            return new CreateSecretResponseModel()
+            {
+                Successfull = false,
+                StatusCode = 400,
+                ErrorMessage = "Secret with this key and environment already exists",
+                Created = false
+            };
+        }
+
+        await this.secretsService.CreateAsync(input);
+
+        return new CreateSecretResponseModel()
+        {
+            Successfull = true,
+            Created = true,
+            StatusCode = 200,
         };
     }
 }

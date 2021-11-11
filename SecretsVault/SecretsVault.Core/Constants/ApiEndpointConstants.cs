@@ -7,4 +7,6 @@ internal static class ApiEndpointConstants
     public const string GetSecretEndpoint = "http://localhost:5000/api/secrets/getvalue";
 
     public const string SecretExistsEndpoint = "http://localhost:5000/api/secrets/exists";
+
+    public const string CreateSecretEndpoint = "http://localhost:5000/api/secrets/create";
 }
