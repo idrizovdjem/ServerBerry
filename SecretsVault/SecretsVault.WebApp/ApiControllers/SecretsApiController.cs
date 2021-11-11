@@ -35,6 +35,6 @@ public class SecretsApiController : BaseApiController
     public async Task<bool> DeleteSecret(DeleteSecretInputModel input)
     {
         string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        return await this.secretsService.DeleteAsync(input.SecretId, userId);
+        return await this.secretsService.DeleteByIdAsync(input.SecretId, userId);
     }
 }

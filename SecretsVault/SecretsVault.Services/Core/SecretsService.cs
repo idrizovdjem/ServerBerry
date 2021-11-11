@@ -52,7 +52,7 @@ public class SecretsService : ISecretsService
         return value ?? string.Empty;
     }
 
-    public async Task<bool> DeleteAsync(string secretId, string userId)
+    public async Task<bool> DeleteByIdAsync(string secretId, string userId)
     {
         Secret secret = await this.context.Secrets
             .Where(s => s.Id == secretId && s.Application.CreatorId == userId)
@@ -76,6 +76,22 @@ public class SecretsService : ISecretsService
 
         this.context.Secrets.RemoveRange(secrets);
         await this.context.SaveChangesAsync();
+    }
+
+    public async Task<bool> DeleteAsync(DeleteSecretWithKeyAndEnvironmentInputModel input)
+    {
+        Secret secret = await this.context.Secrets
+            .Where(s => s.ApplicationId == input.ApplicationId && s.Key == input.Key && s.Environment == input.Environment)
+            .FirstOrDefaultAsync();
+
+        if(secret == null)
+        {
+            return false;
+        }
+
+        this.context.Remove(secret);
+        await this.context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<EditSecretInputModel> GetForEditAsync(string secretId)

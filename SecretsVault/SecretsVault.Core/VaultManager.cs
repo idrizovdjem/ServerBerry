@@ -12,7 +12,6 @@ using SecretsVault.ViewModels.Response;
 
 public class VaultManager
 {
-    private string authenticationToken;
     private string applicationId;
 
     public async Task<bool> SetupAsync(string secretKey)
@@ -31,7 +30,6 @@ public class VaultManager
             throw new InvalidSecretKeyException(secretKey);
         }
 
-        this.authenticationToken = responseModel.Token;
         this.applicationId = responseModel.ApplicationId;
 
         return responseModel.Successfull;
@@ -97,6 +95,27 @@ public class VaultManager
         {
             throw new RequestFailedException(ApiEndpointConstants.CreateSecretEndpoint, responseModel.ErrorMessage);
         }
+    }
+
+    public async Task<bool> DeleteSecretAsync(string key, string environment)
+    {
+        DeleteSecretWithKeyAndEnvironmentInputModel inputModel = new DeleteSecretWithKeyAndEnvironmentInputModel()
+        {
+            Key = key,
+            Environment = environment,
+            ApplicationId = applicationId
+        };
+
+        DeleteSecretResponseModel responseModel = await ApiEndpointConstants.DeleteSecretEndpoint
+            .PostJsonAsync(inputModel)
+            .ReceiveJson<DeleteSecretResponseModel>();
+
+        if(responseModel.Successfull == false)
+        {
+            throw new RequestFailedException(ApiEndpointConstants.DeleteSecretEndpoint, responseModel.ErrorMessage);
+        }
+
+        return responseModel.Deleted;
     }
 
     private static void ValidateKeyAndEnvironment(string key, string environment)

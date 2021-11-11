@@ -13,9 +13,11 @@ public interface ISecretsService
 
     Task<string> GetValueAsync(GetSecretValueInputModel input);
 
-    Task<bool> DeleteAsync(string secretId, string userId);
+    Task<bool> DeleteByIdAsync(string secretId, string userId);
 
     Task DeleteAllAsync(string applicationId);
+
+    Task<bool> DeleteAsync(DeleteSecretWithKeyAndEnvironmentInputModel input);
 
     Task<EditSecretInputModel> GetForEditAsync(string secretId);
 

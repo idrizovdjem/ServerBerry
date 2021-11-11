@@ -82,4 +82,16 @@ public class SecretsController : ControllerBase
             StatusCode = 200,
         };
     }
+
+    [HttpPost]
+    public async Task<DeleteSecretResponseModel> Delete(DeleteSecretWithKeyAndEnvironmentInputModel input)
+    {
+        bool deleted = await this.secretsService.DeleteAsync(input);
+        return new DeleteSecretResponseModel()
+        {
+            Successfull = true,
+            StatusCode = 200,
+            Deleted = deleted
+        };
+    }
 }

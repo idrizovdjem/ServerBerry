@@ -23,7 +23,6 @@ public class AuthenticationService : IAuthenticationService
             .Where(a => a.SecretKey == secretKey)
             .Select(a => new ApplicationAuthenticateViewModel()
             {
-                Token = a.CreatorId,
                 ApplicationId = a.Id
             })
             .FirstOrDefaultAsync();

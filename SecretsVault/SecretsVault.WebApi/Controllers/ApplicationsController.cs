@@ -33,7 +33,7 @@ public class ApplicationsController : ControllerBase
         }
 
         ApplicationAuthenticateViewModel authenticateViewModel = await this.authenticationService.AuthenticateAsync(secretKey);
-        if(string.IsNullOrWhiteSpace(authenticateViewModel.Token) == true || string.IsNullOrWhiteSpace(authenticateViewModel.ApplicationId))
+        if(string.IsNullOrWhiteSpace(authenticateViewModel.ApplicationId))
         {
             AuthenticateResponseModel badResponseModel = new AuthenticateResponseModel()
             {
@@ -48,7 +48,6 @@ public class ApplicationsController : ControllerBase
         AuthenticateResponseModel responseModel = new AuthenticateResponseModel()
         {
             Successfull = true,
-            Token = authenticateViewModel.Token,
             ApplicationId = authenticateViewModel.ApplicationId,
             StatusCode = 200
         };
