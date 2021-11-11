@@ -110,4 +110,10 @@ public class SecretsService : ISecretsService
         this.context.Update(secret);
         await this.context.SaveChangesAsync();
     }
+
+    public async Task<bool> ExistsAsync(SecretExistsInputModel input)
+    {
+        return await this.context.Secrets
+            .AnyAsync(s => s.Key == input.Key && s.Environment == input.Environment && s.ApplicationId == input.ApplicationId);
+    }
 }

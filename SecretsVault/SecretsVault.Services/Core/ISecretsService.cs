@@ -20,4 +20,6 @@ public interface ISecretsService
     Task<EditSecretInputModel> GetForEditAsync(string secretId);
 
     Task EditAsync(EditSecretInputModel input);
+
+    Task<bool> ExistsAsync(SecretExistsInputModel input);
 }

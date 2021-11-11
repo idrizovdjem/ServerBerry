@@ -38,4 +38,14 @@ public class SecretsController : ControllerBase
             Value = secretValue
         };
     }
+
+    public async Task<SecretExistsResponseModel> Exists(SecretExistsInputModel input)
+    {
+        bool secretExists = await this.secretsService.ExistsAsync(input);
+        return new SecretExistsResponseModel()
+        {
+            Successfull = true,
+            Result = secretExists
+        };
+    }
 }
