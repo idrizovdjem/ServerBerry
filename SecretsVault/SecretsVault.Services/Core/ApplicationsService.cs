@@ -35,6 +35,19 @@ public class ApplicationsService : IApplicationsService
         await this.context.SaveChangesAsync();
     }
 
+    public async Task CreateAsync(CreateApplicationWithUserIdInputModel input)
+    {
+        Application application = new Application()
+        {
+            Name = input.Name,
+            CreatorId = input.UserId,
+            SecretKey = Guid.NewGuid().ToString()
+        };
+
+        await this.context.Applications.AddAsync(application);
+        await this.context.SaveChangesAsync();
+    }
+
     public async Task<ApplicationViewModel[]> GetAllAsync(string userId)
     {
         return await this.context.Applications

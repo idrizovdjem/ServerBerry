@@ -9,9 +9,11 @@ using SecretsVault.Core.Constants;
 using SecretsVault.Core.Exceptions;
 using SecretsVault.ViewModels.Secret;
 using SecretsVault.ViewModels.Response;
+using SecretsVault.ViewModels.Application;
 
 public class VaultManager
 {
+    private string token;
     private string applicationId;
 
     public async Task<bool> SetupAsync(string secretKey)
@@ -31,6 +33,7 @@ public class VaultManager
         }
 
         this.applicationId = responseModel.ApplicationId;
+        this.token = responseModel.Token;
 
         return responseModel.Successfull;
     }
@@ -116,6 +119,29 @@ public class VaultManager
         }
 
         return responseModel.Deleted;
+    }
+
+    public async Task CreateApplicationAsync(string applicationName)
+    {
+        if(string.IsNullOrWhiteSpace(applicationId) == true)
+        {
+            throw new ArgumentException("Application name cannot be null");
+        }
+
+        CreateApplicationWithUserIdInputModel inputModel = new CreateApplicationWithUserIdInputModel()
+        {
+            Name =  applicationName,
+            UserId = token
+        };
+
+        CreateApplicationResponseModel responseModel = await ApiEndpointConstants.CreateApplicationEndpoint
+            .PostJsonAsync(inputModel)
+            .ReceiveJson<CreateApplicationResponseModel>();
+
+        if(responseModel.Successfull == false)
+        {
+            throw new RequestFailedException(ApiEndpointConstants.CreateApplicationEndpoint, responseModel.ErrorMessage);
+        }
     }
 
     private static void ValidateKeyAndEnvironment(string key, string environment)

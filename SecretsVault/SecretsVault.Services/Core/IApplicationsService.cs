@@ -10,6 +10,8 @@ public interface IApplicationsService
 
     Task CreateAsync(CreateApplicationInputModel input, string userId);
 
+    Task CreateAsync(CreateApplicationWithUserIdInputModel input);
+
     Task<bool> RemoveAsync(string applicationId, string userId);
 
     Task<ApplicationViewModel[]> GetAllAsync(string userId);

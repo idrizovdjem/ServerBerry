@@ -21,7 +21,7 @@ public class SecretsController : ControllerBase
     public async Task<GetSecretResponseModel> GetValue(GetSecretValueInputModel input)
     {
         string secretValue = await this.secretsService.GetValueAsync(input);
-        if(string.IsNullOrWhiteSpace(secretValue) == true)
+        if (string.IsNullOrWhiteSpace(secretValue) == true)
         {
             return new GetSecretResponseModel()
             {
@@ -62,7 +62,7 @@ public class SecretsController : ControllerBase
         };
 
         bool secretExists = await this.secretsService.ExistsAsync(secretExistsModel);
-        if(secretExists == true)
+        if (secretExists == true)
         {
             return new CreateSecretResponseModel()
             {

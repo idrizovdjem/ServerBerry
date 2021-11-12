@@ -2,56 +2,65 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using SecretsVault.Services.Core;
 using SecretsVault.ViewModels.Response;
-using SecretsVault.Services.Authentication;
-using SecretsVault.ViewModels.Authenticate;
+using SecretsVault.ViewModels.Application;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class ApplicationsController : ControllerBase
 {
-    private readonly IAuthenticationService authenticationService;
+    private readonly IApplicationsService applicationsService;
 
-    public ApplicationsController(IAuthenticationService authenticationService)
+    public ApplicationsController(IApplicationsService applicationsService)
     {
-        this.authenticationService = authenticationService;
+        this.applicationsService = applicationsService;
     }
 
     [HttpPost]
-    public async Task<AuthenticateResponseModel> Authenticate([FromBody] string secretKey)
+    public async Task<CreateApplicationResponseModel> Create(CreateApplicationWithUserIdInputModel input)
     {
-        if(string.IsNullOrWhiteSpace(secretKey) == true)
+        if(string.IsNullOrEmpty(input?.Name) == true)
         {
-            AuthenticateResponseModel badResponseModel = new AuthenticateResponseModel()
+            return new CreateApplicationResponseModel()
             {
                 Successfull = false,
-                ErrorMessage = "Missing secretKey",
-                StatusCode = 400
+                StatusCode = 400,
+                ErrorMessage = "Application name is required",
+                Created = false
             };
-
-            return badResponseModel;
         }
 
-        ApplicationAuthenticateViewModel authenticateViewModel = await this.authenticationService.AuthenticateAsync(secretKey);
-        if(string.IsNullOrWhiteSpace(authenticateViewModel.ApplicationId))
+        if(string.IsNullOrEmpty(input?.UserId) == true)
         {
-            AuthenticateResponseModel badResponseModel = new AuthenticateResponseModel()
+            return new CreateApplicationResponseModel()
             {
+                StatusCode = 400,
                 Successfull = false,
-                ErrorMessage = "Invalid secretKey",
-                StatusCode = 400
+                ErrorMessage = "User id or token is required",
+                Created = false
             };
-
-            return badResponseModel;
         }
 
-        AuthenticateResponseModel responseModel = new AuthenticateResponseModel()
+        bool nameAvailable = await this.applicationsService.IsNameAvailableAsync(input.Name, input.UserId);
+        if(nameAvailable == false)
         {
+            return new CreateApplicationResponseModel()
+            {
+                StatusCode = 400,
+                Successfull = false,
+                ErrorMessage = "This application name is already in use",
+                Created = false
+            };
+        }
+
+        await this.applicationsService.CreateAsync(input);
+        return new CreateApplicationResponseModel()
+        {
+            StatusCode = 201,
             Successfull = true,
-            ApplicationId = authenticateViewModel.ApplicationId,
-            StatusCode = 200
+            Created = true,
+            ErrorMessage = String.Empty
         };
-
-        return responseModel;
     }
 }
