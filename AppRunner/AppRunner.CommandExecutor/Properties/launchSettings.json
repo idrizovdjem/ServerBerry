@@ -2,7 +2,7 @@
   "profiles": {
     "AppRunner.CommandExecutor": {
       "commandName": "Project",
-      "commandLineArgs": "SqlServer \"Server=DESKTOP-LH7CK7C\\SQLEXPRESS;Database=AppRunnerCore;Integrated Security=true;\""
+      "commandLineArgs": "Dev"
     }
   }
 }

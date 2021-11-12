@@ -1,41 +1,38 @@
 ﻿namespace AppRunner.CommandExecutor;
 
-using System;
 using System.Threading.Tasks;
+
+using SecretsVault.Core;
+
+using AppRunner.Common.Exceptions;
+using AppRunner.CommandExecutor.Constants;
 
 public class Program
 {
+    private static VaultManager vaultManager;
     private static string databaseType;
     private static string connectionString;
 
     public static async Task Main(string[] args)
     {
-        Setup(args);
+        vaultManager = new VaultManager();
+        await vaultManager.SetupAsync(SetupConstants.VAULT_MANAGER_SECRET_KEY);
+
+        await SetupAsync(args);
         Engine engine = new Engine(databaseType, connectionString);
         await engine.RunAsync();
     }
 
-    private static void Setup(string[] args)
+    private static async Task SetupAsync(string[] args)
     {
-        if (args.Length < 2)
+        if(args.Length == 0)
         {
-            throw new ArgumentException("Database type and connection string are required arguments");
+            throw new MissingEnvironmentException();
         }
 
-        string databaseTypeArg = args[0];
-        string connectionStringArg = args[1];
+        string environment = args[0];
 
-        if (string.IsNullOrWhiteSpace(databaseTypeArg) == true)
-        {
-            throw new ArgumentException("Database type cannot be empty");
-        }
-
-        if (string.IsNullOrWhiteSpace(connectionStringArg) == true)
-        {
-            throw new ArgumentException("Connection string cannot be empty");
-        }
-
-        databaseType = databaseTypeArg;
-        connectionString = connectionStringArg;
+        databaseType = await vaultManager.GetSecretAsync("DatabaseType", environment);
+        connectionString = await vaultManager.GetSecretAsync("ConnectionString", environment);
     }
 }
