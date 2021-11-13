@@ -7,23 +7,34 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using SecretsVault.Core;
+
 using DatabaseExtractorCore;
 
 using AppRunner.Data;
+using AppRunner.Common.Constants;
 using AppRunner.Services.Application;
 
 public class Startup
 {
+    private readonly VaultManager vaultManager;
+
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
+        this.vaultManager = new VaultManager();
+        this.vaultManager.SetupAsync(this.Configuration["SecretKey"]).Wait();
     }
 
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<ApplicationDbContext>(DatabaseExtractor.GetOptionsBuilderAction(this.Configuration));
+        string environment = this.Configuration["Environment"];
+        string databaseType = this.vaultManager.GetSecretAsync(VaultConstants.DATABASE_TYPE_KEY, environment).GetAwaiter().GetResult();
+        string connectionString = this.vaultManager.GetSecretAsync(VaultConstants.CONNECTION_STRING_KEY, environment).GetAwaiter().GetResult();
+
+        services.AddDbContext<ApplicationDbContext>(DatabaseExtractor.GetOptionsBuilderAction(databaseType, connectionString));
 
         services.AddScoped<IApplicationsService, ApplicationsService>();
 

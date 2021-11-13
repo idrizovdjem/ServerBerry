@@ -2,7 +2,7 @@
   "profiles": {
     "AppRunner.CommandExecutor": {
       "commandName": "Project",
-      "commandLineArgs": "Dev"
+      "commandLineArgs": "224564d7-b2ce-4162-aa63-e59e386ff4df Dev"
     }
   }
 }
