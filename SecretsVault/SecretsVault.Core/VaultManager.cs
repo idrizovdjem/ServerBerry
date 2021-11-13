@@ -27,7 +27,7 @@ public class VaultManager
                 .PostJsonAsync(secretKey)
                 .ReceiveJson<AuthenticateResponseModel>();
 
-        if(responseModel.Successfull == false && responseModel.StatusCode == 400)
+        if(responseModel.Successfull == false)
         {
             throw new InvalidSecretKeyException(secretKey);
         }
