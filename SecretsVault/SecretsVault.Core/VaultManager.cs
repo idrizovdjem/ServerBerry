@@ -16,6 +16,13 @@ public class VaultManager
     private string token;
     private string applicationId;
 
+    /// <summary>
+    /// Authorize vault manager client
+    /// </summary>
+    /// <param name="secretKey"></param>
+    /// <returns></returns>
+    /// <exception cref="EmptySecretKeyException"></exception>
+    /// <exception cref="InvalidSecretKeyException"></exception>
     public async Task<bool> SetupAsync(string secretKey)
     {
         if(string.IsNullOrWhiteSpace(secretKey) == true)
@@ -38,6 +45,13 @@ public class VaultManager
         return responseModel.Successfull;
     }
 
+    /// <summary>
+    /// Retrieve secret value
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="environment"></param>
+    /// <returns></returns>
+    /// <exception cref="RequestFailedException"></exception>
     public async Task<string> GetSecretAsync(string key, string environment)
     {
         ValidateKeyAndEnvironment(key, environment);
@@ -59,6 +73,13 @@ public class VaultManager
         return responseModel.Value;
     }
 
+    /// <summary>
+    /// Check if secret exists
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="environment"></param>
+    /// <returns></returns>
+    /// <exception cref="RequestFailedException"></exception>
     public async Task<bool> SecretExistsAsync(string key, string environment)
     {
         ValidateKeyAndEnvironment(key, environment);
@@ -80,6 +101,14 @@ public class VaultManager
         return responseModel.Result;
     }
 
+    /// <summary>
+    /// Create application secret
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="environment"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    /// <exception cref="RequestFailedException"></exception>
     public async Task CreateSecretAsync(string key, string environment, string value)
     {
         CreateSecretInputModel inputModel = new CreateSecretInputModel()
@@ -100,6 +129,13 @@ public class VaultManager
         }
     }
 
+    /// <summary>
+    /// Delete application secret
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="environment"></param>
+    /// <returns></returns>
+    /// <exception cref="RequestFailedException"></exception>
     public async Task<bool> DeleteSecretAsync(string key, string environment)
     {
         DeleteSecretWithKeyAndEnvironmentInputModel inputModel = new DeleteSecretWithKeyAndEnvironmentInputModel()
@@ -121,6 +157,13 @@ public class VaultManager
         return responseModel.Deleted;
     }
 
+    /// <summary>
+    /// Create application
+    /// </summary>
+    /// <param name="applicationName"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="RequestFailedException"></exception>
     public async Task CreateApplicationAsync(string applicationName)
     {
         if(string.IsNullOrWhiteSpace(applicationId) == true)
