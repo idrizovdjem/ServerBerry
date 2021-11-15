@@ -1,7 +1,9 @@
+import Navigation from "./components/navigation/Navigation";
+
 const App = () => {
-  return (
-    <div>Works</div>
-  );
+    return (
+        <Navigation/>
+    );
 }
 
 export default App;
