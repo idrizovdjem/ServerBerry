@@ -4,12 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-public class ApplicationDbContext : IdentityDbContext
+using ExpenseTracker.Data.Models;
+
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
+    public ApplicationDbContext()
+    { }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : base(options)
-    {
-    }
+    { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
