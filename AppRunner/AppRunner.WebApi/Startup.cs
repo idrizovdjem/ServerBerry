@@ -37,6 +37,13 @@ public class Startup
         services.AddDbContext<ApplicationDbContext>(DatabaseExtractor.GetOptionsBuilderAction(databaseType, connectionString));
 
         services.AddScoped<IApplicationsService, ApplicationsService>();
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: "ClientCorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin();
+            });
+        });
 
         services.AddControllers();
         services.AddSwaggerGen(c =>
@@ -57,6 +64,7 @@ public class Startup
         app.UseHttpsRedirection();
 
         app.UseRouting();
+        app.UseCors("ClientCorsPolicy");
 
         app.UseAuthorization();
 

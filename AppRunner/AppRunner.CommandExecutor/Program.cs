@@ -7,6 +7,7 @@ using SecretsVault.Core;
 
 using AppRunner.Common.Exceptions;
 using AppRunner.CommandExecutor.Constants;
+using AppRunner.Common.Constants;
 
 public class Program
 {

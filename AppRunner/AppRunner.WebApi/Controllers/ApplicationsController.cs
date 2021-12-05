@@ -1,11 +1,12 @@
 ﻿namespace AppRunner.WebApi.Controllers;
 
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
 
-using AppRunner.Data.Models;
 using AppRunner.Services.Application;
+using AppRunner.ViewModels.Application;
 
 public class ApplicationsController : BaseController
 {
@@ -19,7 +20,7 @@ public class ApplicationsController : BaseController
     [HttpGet]
     public async Task<ActionResult> OnGetAsync()
     {
-        Application[] applications = await this.applicationsService.GetApplicationsAsync();
+        IEnumerable<ApplicationViewModel> applications = await this.applicationsService.GetApplicationsAsync();
         return Ok(applications);
     }
 }

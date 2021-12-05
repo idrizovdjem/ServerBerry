@@ -1,13 +1,15 @@
 ﻿namespace AppRunner.Services.Application;
 
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using AppRunner.Data.Models;
 using AppRunner.Common.Enums;
+using AppRunner.ViewModels.Application;
 
 public interface IApplicationsService
 {
-    Task<Application[]> GetApplicationsAsync();
+    Task<IEnumerable<ApplicationViewModel>> GetApplicationsAsync();
 
     Task<bool> IsNameAvailableAsync(string name);
 
