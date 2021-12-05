@@ -1,0 +1,31 @@
+.ApplicationRow {
+    width: 200px;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+    user-select: none;
+}
+
+.ApplicationName {
+    width: 90%;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 25px;
+    margin: 0 5%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.Icons {
+    width: 100%;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 20px;
+}
+
+.RunIcon, .EditIcon, .DeleteIcon { cursor: pointer; }
+
+.RunIcon:hover { color: #32CD32; }
+.EditIcon:hover { color: #1E90FF; }
+.DeleteIcon:hover { color: #DC143C; }
