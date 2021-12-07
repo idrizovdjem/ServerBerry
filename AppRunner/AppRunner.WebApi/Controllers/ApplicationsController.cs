@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
 
+using AppRunner.Common.Constants;
 using AppRunner.Services.Application;
 using AppRunner.ViewModels.Application;
 
@@ -17,10 +18,17 @@ public class ApplicationsController : BaseController
         this.applicationsService = applicationsService;
     }
 
-    [HttpGet]
-    public async Task<ActionResult> OnGetAsync()
+    [HttpGet(ApplicationsEndpoints.BaseUrl)]
+    public async Task<ActionResult> GetAll()
     {
-        IEnumerable<ApplicationViewModel> applications = await this.applicationsService.GetApplicationsAsync();
+        IEnumerable<ApplicationViewModel> applications = await this.applicationsService.GetApplicationsViewModelsAsync();
         return Ok(applications);
+    }
+
+    [HttpGet(ApplicationsEndpoints.CheckNameUrl)]
+    public async Task<ActionResult> CheckName(string value)
+    {
+        bool isNameAvailable = await this.applicationsService.IsNameAvailableAsync(value);
+        return Ok(isNameAvailable);
     }
 }
