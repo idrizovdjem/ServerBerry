@@ -1,0 +1,75 @@
+.ArgumentsLabel {
+    font-size: 25px;
+}
+
+.KeyInput, .ValueInput {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    font-size: 20px;
+    border: 2px solid gray;
+    border-radius: 5px;
+}
+
+.KeyInput {
+    width: 25%;
+}
+
+.ValueInput {
+    margin-left: 2%;
+    width: 68%;
+}
+
+.CrossIcon {
+    font-size: 30px;
+    vertical-align: middle;
+    margin-left: 2%;
+    color: gray;
+}
+
+.CrossIcon:hover, .PlusIcon:hover {
+    cursor: pointer;
+    color: black;
+}
+
+.PlusIcon {
+    display: block;
+    width: 5%;
+    margin-left: auto;
+    font-size: 30px;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+.ApplicationsButton {
+    font-size: 20px;
+    padding: 10px 25px;
+    background-color: #4885f7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.CreateButton {
+    float: right;
+    font-size: 20px;
+    padding: 10px 25px;
+    background-color: #4885f7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.LeftArrow {
+    margin-right: 15px;
+}
+
+.CheckIcon {
+    margin-left: 15px;
+}
+
+.ErrorMessage {
+    color: red;
+}
