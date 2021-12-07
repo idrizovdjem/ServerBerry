@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import classes from './Applications.module.css';
 import IApplication from '../../interfaces/IApplication';
-import applicationsService from '../../services/ApplicationsService';
+import ApplicationsService from '../../services/ApplicationsService';
 import ApplicationBlock from '../applicationBlock/ApplicationBlock';
 
 const Applications = () => {
@@ -9,7 +9,7 @@ const Applications = () => {
 
     useEffect(() => {
         const fetchApplications = async () => {
-            const fetchedApplications: IApplication[] = await applicationsService.getAllAsync();
+            const fetchedApplications: IApplication[] = await ApplicationsService.getAllAsync();
             setApplications(fetchedApplications);
         };
 
