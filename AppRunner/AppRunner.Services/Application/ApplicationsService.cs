@@ -33,7 +33,12 @@ public class ApplicationsService : IApplicationsService
         await this.context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<ApplicationViewModel>> GetApplicationsAsync()
+    public async Task<Application[]> GetApplicationsAsync()
+    {
+        return await this.context.Applications.ToArrayAsync();
+    }
+
+    public async Task<IEnumerable<ApplicationViewModel>> GetApplicationsViewModelsAsync()
     {
         return await this.context.Applications
             .Select(a => new ApplicationViewModel()

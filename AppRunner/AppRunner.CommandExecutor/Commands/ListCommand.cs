@@ -1,6 +1,7 @@
 ﻿namespace AppRunner.CommandExecutor.Commands;
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using AppRunner.Data.Models;

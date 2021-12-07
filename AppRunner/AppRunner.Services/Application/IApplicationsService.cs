@@ -9,7 +9,9 @@ using AppRunner.ViewModels.Application;
 
 public interface IApplicationsService
 {
-    Task<IEnumerable<ApplicationViewModel>> GetApplicationsAsync();
+    Task<Application[]> GetApplicationsAsync();
+
+    Task<IEnumerable<ApplicationViewModel>> GetApplicationsViewModelsAsync();
 
     Task<bool> IsNameAvailableAsync(string name);
 
